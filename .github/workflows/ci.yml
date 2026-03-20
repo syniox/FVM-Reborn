@@ -19,12 +19,14 @@ jobs:
           Write-Output "YYP file found at: $yyp"
           "yyp-path=$yyp" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
       # This step sets up the GameMaker build CLI tool Igor https://github.com/bscotch/igor-setup
-      - name: use Igor Setup
-        uses: bscotch/igor-setup@v1
-        id: igor
-        with:
-          target-yyp: ${{ steps.find_yyp.outputs.yyp-path }}
-          access-key: ${{ secrets.ACCESS_KEY }} # 📝 To generate your Access Key, check out the Access Key section of the GameMaker Manual's Building via Command Line page: https://manual.gamemaker.io/monthly/en/#t=Settings%2FBuilding_via_Command_Line.htm
+      - name: Download Igor
+        run: |
+          curl -L -o igor.zip https://github.com/bscotch/igor/releases/latest/download/igor-windows.zip
+          powershell -Command "Expand-Archive igor.zip -DestinationPath igor"
+      - name: Set Igor path
+        run: |
+          echo "IGOR_PATH=${{ github.workspace }}\igor\Igor.exe" >> $env:GITHUB_ENV
+
       # This step uses Igor to build the GameMaker project https://github.com/bscotch/igor-build
       - name: use Igor build
         uses: bscotch/igor-build@v1
