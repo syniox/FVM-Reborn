@@ -5,7 +5,7 @@ on:
   workflow_call: #This line allows you to run the workflow from another workflow
 jobs:
   build:
-    runs-on: windows-2022
+    runs-on: windows-2025
     steps:
       # Check out the repository with the GameMaker project
       - uses: actions/checkout@v4
@@ -20,7 +20,7 @@ jobs:
           "yyp-path=$yyp" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
       # This step sets up the GameMaker build CLI tool Igor https://github.com/bscotch/igor-setup
       - name: use Igor Setup
-        uses: bscotch/igor-setup@v2.1.1
+        uses: bscotch/igor-setup@v1
         id: igor
         with:
           target-yyp: ${{ steps.find_yyp.outputs.yyp-path }}
